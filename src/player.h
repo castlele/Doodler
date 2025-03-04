@@ -1,6 +1,8 @@
 #ifndef PLAYER_H_
 #define PLAYER_H_
 
+#include <raylib.h>
+
 #include "platform.h"
 
 typedef struct Player
@@ -8,6 +10,8 @@ typedef struct Player
     int x;
     int y;
 } Player;
+
+Rectangle GetPlayerRect(Player *p);
 
 Player CreatePlayer(int x, int y);
 

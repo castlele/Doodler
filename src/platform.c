@@ -15,6 +15,16 @@ int GetPlatformHeight()
     return PLATFORM_H;
 }
 
+Rectangle GetPlatformRect(Platform *p)
+{
+    return (Rectangle) {
+        .x = p->x,
+        .y = p->y,
+        .width = GetPlatformWidth(),
+        .height = GetPlatformHeight(),
+    };
+}
+
 Platform CreatePlatform(int x, int y)
 {
     return (Platform) {

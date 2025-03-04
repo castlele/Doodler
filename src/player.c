@@ -1,5 +1,4 @@
 #include <raylib.h>
-#include <stdio.h>
 #include <stdbool.h>
 
 #include "player.h"
@@ -10,6 +9,16 @@
 #define PLAYER_H 50
 
 void ApplyGravity(Player *p);
+
+Rectangle GetPlayerRect(Player *p)
+{
+    return (Rectangle) {
+        .x = p->x,
+        .y = p->y,
+        .width = PLAYER_W,
+        .height = PLAYER_H,
+    };
+}
 
 Player CreatePlayer(int x, int y)
 {
@@ -31,21 +40,7 @@ void DrawPlayer(Player *p)
 
 void CheckPlayerCollisionWithPlatform(Player *p, Platform *plat)
 {
-    bool collide = CheckCollisionRecs(
-        // TODO: Getting of this rects should be much easier!
-        (Rectangle) {
-            .x = p->x,
-            .y = p->y,
-            .width = PLAYER_W,
-            .height = PLAYER_H,
-        },
-        (Rectangle) {
-            .x = plat->x,
-            .y = plat->y,
-            .width = GetPlatformWidth(),
-            .height = GetPlatformHeight(),
-        }
-    );
+    bool collide = CheckCollisionRecs(GetPlayerRect(p), GetPlatformRect(plat));
 
     // TODO: Check where player and plat are collided
 
@@ -59,5 +54,4 @@ void CheckPlayerCollisionWithPlatform(Player *p, Platform *plat)
 void ApplyGravity(Player *p)
 {
     p->y += GetGravity() * GetFrameTime();
-    printf("Y: %d, EXPECTED: %f\n", p->y, GetGravity() * GetFrameTime());
 }

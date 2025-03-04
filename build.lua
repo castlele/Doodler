@@ -1,4 +1,5 @@
 ---@diagnostic disable-next-line
 conf = {
-   run = "zig build && ./zig-out/bin/Doodler",
+   run = "make run",
+   bear = "make clean && bear -- make build"
 }

@@ -1,2 +1,4 @@
-zig-out
-.zig-cache
+src/*.o
+src/*.d
+build
+.cache

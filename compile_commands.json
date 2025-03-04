@@ -1,0 +1,22 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-std=c99",
+      "-Werror",
+      "-D_DEFAULT_SOURCE",
+      "-I/usr/local/include/",
+      "-I/src/",
+      "-I./libs/",
+      "-c",
+      "-g",
+      "-o",
+      "src/main.o",
+      "src/main.c"
+    ],
+    "directory": "/home/castlelecs/dev/projects/Doodler",
+    "file": "/home/castlelecs/dev/projects/Doodler/src/main.c",
+    "output": "/home/castlelecs/dev/projects/Doodler/src/main.o"
+  }
+]

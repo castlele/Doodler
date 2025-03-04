@@ -18,5 +18,45 @@
     "directory": "/home/castlelecs/dev/projects/Doodler",
     "file": "/home/castlelecs/dev/projects/Doodler/src/main.c",
     "output": "/home/castlelecs/dev/projects/Doodler/src/main.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-std=c99",
+      "-Werror",
+      "-D_DEFAULT_SOURCE",
+      "-I/usr/local/include/",
+      "-I/src/",
+      "-I./libs/",
+      "-c",
+      "-g",
+      "-o",
+      "src/platform.o",
+      "src/platform.c"
+    ],
+    "directory": "/home/castlelecs/dev/projects/Doodler",
+    "file": "/home/castlelecs/dev/projects/Doodler/src/platform.c",
+    "output": "/home/castlelecs/dev/projects/Doodler/src/platform.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-std=c99",
+      "-Werror",
+      "-D_DEFAULT_SOURCE",
+      "-I/usr/local/include/",
+      "-I/src/",
+      "-I./libs/",
+      "-c",
+      "-g",
+      "-o",
+      "src/player.o",
+      "src/player.c"
+    ],
+    "directory": "/home/castlelecs/dev/projects/Doodler",
+    "file": "/home/castlelecs/dev/projects/Doodler/src/player.c",
+    "output": "/home/castlelecs/dev/projects/Doodler/src/player.o"
   }
 ]

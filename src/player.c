@@ -1,5 +1,6 @@
 #include <raylib.h>
 #include <stdbool.h>
+#include <stdio.h>
 
 #include "player.h"
 #include "config.h"
@@ -9,6 +10,7 @@
 #define PLAYER_H 50
 
 void ApplyGravity(Player *p);
+void MovePlayer(Player *p);
 
 Rectangle GetPlayerRect(Player *p)
 {
@@ -31,6 +33,7 @@ Player CreatePlayer(int x, int y)
 void UpdatePlayer(Player *p)
 {
     ApplyGravity(p);
+    MovePlayer(p);
 }
 
 void DrawPlayer(Player *p)
@@ -54,4 +57,24 @@ void CheckPlayerCollisionWithPlatform(Player *p, Platform *plat)
 void ApplyGravity(Player *p)
 {
     p->y += GetGravity() * GetFrameTime();
+}
+
+void MovePlayer(Player *p)
+{
+    // TODO: Move velocity to constant or configuration
+    int velocity = 150;
+    float dt = GetFrameTime();
+
+    // TODO: Add keys to the config and make them editable from the game :)
+    if (IsKeyDown(KEY_LEFT)) {
+        p->x -= velocity * dt;
+    }
+
+    if (IsKeyDown(KEY_RIGHT)) {
+        p->x += velocity * dt;
+    }
+
+    if (IsKeyDown(KEY_SPACE)) {
+        p->y -= velocity * dt;
+    }
 }

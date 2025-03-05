@@ -2,11 +2,13 @@
 #define PLATFORM_H_
 
 #include <raylib.h>
+#include "physics/collider.h"
 
 typedef struct Platform
 {
     int x;
     int y;
+    Collider *collider;
 } Platform;
 
 int GetPlatformWidth();

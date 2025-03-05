@@ -7,8 +7,10 @@ LIB=-L/usr/local/lib/ -lraylib -lm
 
 SRC=./src
 
-FILES=\
-	$(wildcard src/*.c)
+FILES= \
+	$(wildcard src/*.c) \
+	$(wildcard src/physics/*.c)
+
 OBJECTS=$(FILES:.c=.o)
 
 APP=./build/Doodler

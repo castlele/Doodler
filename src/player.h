@@ -4,11 +4,13 @@
 #include <raylib.h>
 
 #include "platform.h"
+#include "physics/collider.h"
 
 typedef struct Player
 {
     int x;
     int y;
+    Collider *collider;
 } Player;
 
 Rectangle GetPlayerRect(Player *p);

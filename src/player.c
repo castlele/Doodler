@@ -1,6 +1,5 @@
 #include <raylib.h>
 #include <stdbool.h>
-#include <stdio.h>
 
 #include "player.h"
 #include "config.h"
@@ -32,8 +31,8 @@ Player CreatePlayer(int x, int y)
 
 void UpdatePlayer(Player *p)
 {
-    ApplyGravity(p);
-    MovePlayer(p);
+    p->x = p->collider->x;
+    p->y = p->collider->y;
 }
 
 void DrawPlayer(Player *p)
@@ -41,6 +40,7 @@ void DrawPlayer(Player *p)
     DrawRectangle(p->x, p->y, PLAYER_W, PLAYER_H, GREEN);
 }
 
+// TODO: Move to physics module
 void CheckPlayerCollisionWithPlatform(Player *p, Platform *plat)
 {
     bool collide = CheckCollisionRecs(GetPlayerRect(p), GetPlatformRect(plat));

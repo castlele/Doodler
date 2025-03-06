@@ -10,7 +10,7 @@
 // TODO: defines should be deleted or moved to constants
 #define MAX_BODIES_COUNT 32
 #define MAX_SPEED_Y 250
-#define GRAVITY 80
+#define GRAVITY 800
 
 // TODO: This should be refactored!
 Collider *bodies[MAX_BODIES_COUNT];
@@ -80,7 +80,7 @@ void UpdatePhysicsWorld(PhysicsWorld *w)
             }
         }
 
-        if (lhs->type == ColliderTypeDinamic && lhs->speedY != 0) {
+        if (lhs->type == ColliderTypeDinamic) {
             lhs->speedY += dt * GRAVITY;
 
             lhs->y += fmin(MAX_SPEED_Y, fmax(-MAX_SPEED_Y, lhs->speedY * dt));
@@ -107,7 +107,7 @@ bool IsCollided(Collider *lhs, Collider *rhs)
     float p2x = fmin(lhs->x + lhs->width, rhs->x + rhs->width);
     float p2y = fmin(lhs->y + lhs->height, rhs->y + rhs->height);
 
-    if (p2x - p1x > 0 && p2y - p1y > 0) {
+    if (p2x - p1x >= 0 && p2y - p1y >= 0) {
         collided = true;
     }
 

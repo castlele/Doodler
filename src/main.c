@@ -14,7 +14,7 @@ int main()
 {
     ApplyConfig();
 
-    PhysicsWorld world = CreatePhysicsWorld(0, 500);
+    PhysicsWorld world = CreatePhysicsWorld(0, 800);
 
     int platformW = GetPlatformWidth();
     int platformH = GetPlatformHeight();
@@ -27,20 +27,23 @@ int main()
     Rectangle pr = GetPlayerRect(&player);
     Rectangle platr = GetPlatformRect(&platform);
 
-    player.collider = AddCollider((ColliderData){
-        .x = pr.x,
-        .y = pr.y,
-        .width = pr.width,
-        .height = pr.height,
-        .type = ColliderTypeDinamic,
-    });
-    platform.collider = AddCollider((ColliderData){
-        .x = platr.x,
-        .y = platr.y,
-        .width = platr.width,
-        .height = platr.height,
-        .type = ColliderTypeStatic,
-    });
+    player.collider = CreateCollider(
+        pr.x,
+        pr.y,
+        pr.width,
+        pr.height,
+        ColliderTypeDinamic
+    );
+    platform.collider = CreateCollider(
+        platr.x,
+        platr.y,
+        platr.width,
+        platr.height,
+        ColliderTypeStatic
+    );
+
+    AddColliderToWorld(&world, player.collider);
+    AddColliderToWorld(&world, platform.collider);
 
     // TODO: Make window resizable
     //       https://www.reddit.com/r/raylib/comments/a19a67/resizable_window_questions/
@@ -51,14 +54,12 @@ int main()
         UpdatePlatform(&platform);
         UpdatePlayer(&player);
 
-        // CheckPlayerCollisionWithPlatform(&player, &platform);
-
         BeginDrawing();
             ClearBackground(WHITE);
 
             DrawPlatform(&platform);
             DrawPlayer(&player);
-            DrawPhysicsWorld(&world);
+            // DrawPhysicsWorld(&world);
         EndDrawing();
     }
 

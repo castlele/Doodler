@@ -15,8 +15,10 @@ typedef struct Collider
     float y;
     float width;
     float height;
+    float speedX;
     float speedY;
     ColliderType type;
+    char mask[16];
 } Collider;
 
 typedef enum CollisionSide
@@ -31,6 +33,7 @@ bool CheckCollision(Collider *lhs, Collider *rhs);
 CollisionSide GetCollisionSide(bool isCollided, Collider *lhs, Collider *rhs);
 
 Collider *CreateCollider(float x, float y, float width, float height, ColliderType type);
+void SetColliderMask(Collider *c, char mask[]);
 void DestroyCollider(Collider *collider);
 
 #endif

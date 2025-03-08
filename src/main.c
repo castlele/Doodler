@@ -14,7 +14,7 @@ int main()
 {
     ApplyConfig();
 
-    PhysicsWorld world = CreatePhysicsWorld(0, 800);
+    PhysicsWorld world = CreatePhysicsWorld(0, 150);
 
     int platformW = GetPlatformWidth();
     int platformH = GetPlatformHeight();
@@ -34,6 +34,7 @@ int main()
         pr.height,
         ColliderTypeDinamic
     );
+    SetColliderMask(player.collider, "player");
     platform.collider = CreateCollider(
         platr.x,
         platr.y,
@@ -41,9 +42,12 @@ int main()
         platr.height,
         ColliderTypeStatic
     );
+    SetColliderMask(platform.collider, "platform");
 
     AddColliderToWorld(&world, player.collider);
     AddColliderToWorld(&world, platform.collider);
+
+    ObserveCollision("player", "platform", PlayerJump);
 
     // TODO: Make window resizable
     //       https://www.reddit.com/r/raylib/comments/a19a67/resizable_window_questions/

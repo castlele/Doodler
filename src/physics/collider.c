@@ -1,11 +1,13 @@
-#include <stdlib.h>
-
 #include <assert.h>
+#include <cstring>
 #include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "collider.h"
 
-bool CheckCollided(Collider *lhs, Collider *rhs)
+bool CheckCollision(Collider *lhs, Collider *rhs)
 {
     float p1x = fmax(lhs->x, rhs->x);
     float p1y = fmax(lhs->y, rhs->y);
@@ -42,10 +44,16 @@ Collider *CreateCollider(float x, float y, float width, float height, ColliderTy
     collider->y = y;
     collider->width = width;
     collider->height = height;
+    collider->speedX = 0;
     collider->speedY = 0;
     collider->type = type;
 
     return collider;
+}
+
+void SetColliderMask(Collider *c, char mask[])
+{
+    strcpy(c->mask, mask);
 }
 
 void DestroyCollider(Collider *collider)

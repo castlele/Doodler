@@ -27,35 +27,42 @@ void AddColliderToWorld(PhysicsWorld *w, Collider *c)
 
 void UpdatePhysicsWorld(PhysicsWorld *w)
 {
-    // float dt = GetFrameTime();
+    float dt = GetFrameTime();
 
-    // for (int i = 0; i < currentIndex; i++) {
-    //     Collider *lhs = bodies[i];
-    //
-    //     for (int j = 0; j < currentIndex; j++) {
-    //         if (i == j) continue;
-    //
-    //         Collider *rhs = bodies[j];
-    //
-    //         if (IsCollided(lhs, rhs)) {
-    //             CollisionSide side = CheckCollision(lhs, rhs);
-    //
-    //             switch (side) {
-    //                 case CollisionSideBottom:
-    //                 case CollisionSideTop:
-    //                     lhs->speedY = 0;
-    //                     break;
-    //                 default: break;
-    //             }
-    //         }
-    //     }
-    //
-    //     if (lhs->type == ColliderTypeDinamic) {
-    //         lhs->speedY += dt * GRAVITY;
-    //
-    //         lhs->y += fmin(MAX_SPEED_Y, fmax(-MAX_SPEED_Y, lhs->speedY * dt));
-    //     }
-    // }
+    for (int i = 0; i <= w->currentCollider; i++) {
+        Collider *lhs = w->colliders[i];
+
+        for (int j = 0; j <= w->currentCollider; j++) {
+            if (i == j) continue;
+
+            Collider *rhs = w->colliders[j];
+            bool isCollided = CheckCollision(lhs, rhs);
+
+            if (isCollided) {
+                CollisionSide side = GetCollisionSide(isCollided, lhs, rhs);
+
+                switch (side) {
+                    case CollisionSideBottom:
+                    case CollisionSideTop:
+                        lhs->speedY = 0;
+                        break;
+                    case CollisionSideRight:
+                    case CollisionSideLeft:
+                        rhs->speedX = 0;
+                        break;
+                }
+            }
+        }
+
+        if (lhs->type == ColliderTypeDinamic) {
+            lhs->speedX += dt * w->gravityX;
+            lhs->speedY += dt * w->gravityY;
+
+            // lhs->y += fmin(MAX_SPEED_Y, fmax(-MAX_SPEED_Y, lhs->speedY * dt));
+            lhs->x += dt * lhs->speedX;
+            lhs->y += dt * lhs->speedY;
+        }
+    }
 }
 
 void DrawPhysicsWorld(PhysicsWorld *w)

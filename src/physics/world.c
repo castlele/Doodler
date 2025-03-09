@@ -1,11 +1,11 @@
 #include <stdbool.h>
 #include <raylib.h>
-#include <stdio.h>
 #include <assert.h>
-#include <math.h>
 
 #include "world.h"
 #include "collider.h"
+
+void BumpColliders(CollisionSide side, Collider *lhs, Collider *rhs);
 
 PhysicsWorld CreatePhysicsWorld(int gravityX, int gravityY)
 {
@@ -25,12 +25,12 @@ void AddColliderToWorld(PhysicsWorld *w, Collider *c)
     w->colliders[w->currentCollider] = c;
 }
 
-void UpdatePhysicsWorld(PhysicsWorld *w)
+void UpdatePhysicsWorld(PhysicsWorld *w, float dt)
 {
-    float dt = GetFrameTime();
-
     for (int i = 0; i <= w->currentCollider; i++) {
         Collider *lhs = w->colliders[i];
+
+        if (lhs->type == ColliderTypeStatic) continue;
 
         for (int j = 0; j <= w->currentCollider; j++) {
             if (i == j) continue;
@@ -40,6 +40,7 @@ void UpdatePhysicsWorld(PhysicsWorld *w)
 
             if (isCollided) {
                 CollisionSide side = GetCollisionSide(isCollided, lhs, rhs);
+                BumpColliders(side, lhs, rhs);
 
                 switch (side) {
                     case CollisionSideBottom:
@@ -54,22 +55,39 @@ void UpdatePhysicsWorld(PhysicsWorld *w)
             }
         }
 
-        if (lhs->type == ColliderTypeDinamic) {
-            lhs->speedX += dt * w->gravityX;
-            lhs->speedY += dt * w->gravityY;
+        lhs->speedX += dt * w->gravityX;
+        lhs->speedY += dt * w->gravityY;
 
-            // lhs->y += fmin(MAX_SPEED_Y, fmax(-MAX_SPEED_Y, lhs->speedY * dt));
-            lhs->x += dt * lhs->speedX;
-            lhs->y += dt * lhs->speedY;
-        }
+        lhs->x += dt * lhs->speedX;
+        lhs->y += dt * lhs->speedY;
     }
 }
 
 void DrawPhysicsWorld(PhysicsWorld *w)
 {
-    for (int i = -1; i < w->currentCollider; i++) {
+    for (int i = 0; i <= w->currentCollider; i++) {
         Collider *c = w->colliders[i];
 
         DrawRectangleLines(c->x, c->y, c->width, c->height, RED);
+    }
+}
+
+// Private declarations
+
+void BumpColliders(CollisionSide side, Collider *lhs, Collider *rhs)
+{
+    switch (side) {
+        case CollisionSideRight:
+            lhs->x = rhs->x - lhs->width;
+            break;
+        case CollisionSideLeft:
+            lhs->x = rhs->x + rhs->width;
+            break;
+        case CollisionSideTop:
+            lhs->y = rhs->y + rhs->height;
+            break;
+        case CollisionSideBottom:
+            lhs->y = rhs->y - lhs->height;
+            break;
     }
 }

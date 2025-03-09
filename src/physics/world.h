@@ -17,7 +17,7 @@ typedef struct PhysicsWorld
 PhysicsWorld CreatePhysicsWorld(int gravityX, int gravityY);
 void AddColliderToWorld(PhysicsWorld *w, Collider *c);
 
-void UpdatePhysicsWorld(PhysicsWorld *w);
+void UpdatePhysicsWorld(PhysicsWorld *w, float dt);
 void DrawPhysicsWorld(PhysicsWorld *w);
 
 #endif

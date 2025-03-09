@@ -14,6 +14,7 @@ int main()
 {
     ApplyConfig();
 
+    float dt;
     PhysicsWorld world = CreatePhysicsWorld(0, 150);
 
     int platformW = GetPlatformWidth();
@@ -47,14 +48,16 @@ int main()
     AddColliderToWorld(&world, player.collider);
     AddColliderToWorld(&world, platform.collider);
 
-    ObserveCollision("player", "platform", PlayerJump);
+    // ObserveCollision("player", "platform", PlayerJump);
 
     // TODO: Make window resizable
     //       https://www.reddit.com/r/raylib/comments/a19a67/resizable_window_questions/
     InitWindow(SCREEN_W, SCREEN_H, "Doodler");
 
     while (!WindowShouldClose()) {
-        UpdatePhysicsWorld(&world);
+        dt = GetFrameTime();
+
+        UpdatePhysicsWorld(&world, dt);
         UpdatePlatform(&platform);
         UpdatePlayer(&player);
 
@@ -63,7 +66,7 @@ int main()
 
             DrawPlatform(&platform);
             DrawPlayer(&player);
-            // DrawPhysicsWorld(&world);
+            DrawPhysicsWorld(&world);
         EndDrawing();
     }
 
@@ -77,5 +80,7 @@ int main()
 void ApplyConfig()
 {
     // TODO: Make this value configurable
+    // FIX: Why setting fps shouldn't be used?
+    // https://bedroomcoders.co.uk/posts/218
     SetTargetFPS(60);
 }

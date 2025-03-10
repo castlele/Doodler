@@ -50,8 +50,6 @@ int main()
     AddColliderToWorld(&world, player.collider);
     AddColliderToWorld(&world, platform.collider);
 
-    // ObserveCollision("player", "platform", PlayerJump);
-
     // TODO: Make window resizable
     //       https://www.reddit.com/r/raylib/comments/a19a67/resizable_window_questions/
     InitWindow(SCREEN_W, SCREEN_H, "Doodler");
@@ -61,7 +59,7 @@ int main()
 
         UpdatePhysicsWorld(&world, dt);
         UpdatePlatform(&platform);
-        UpdatePlayer(&player);
+        UpdatePlayer(&player, dt);
 
         BeginDrawing();
             ClearBackground(WHITE);

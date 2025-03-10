@@ -24,10 +24,18 @@ Player CreatePlayer(int x, int y)
     };
 }
 
-void UpdatePlayer(Player *p)
+void UpdatePlayer(Player *p, float dt)
 {
     p->x = p->collider->position.x;
     p->y = p->collider->position.y;
+
+    if (IsKeyDown(KEY_LEFT)) {
+        p->collider->velocity.x -= 1000 * dt;
+    } else if (IsKeyDown(KEY_RIGHT)) {
+        p->collider->velocity.x += 1000 * dt;
+    } else {
+        p->collider->velocity.x = 0;
+    }
 }
 
 void DrawPlayer(Player *p)

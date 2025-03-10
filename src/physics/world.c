@@ -45,11 +45,11 @@ void UpdatePhysicsWorld(PhysicsWorld *w, float dt)
                 switch (side) {
                     case CollisionSideBottom:
                     case CollisionSideTop:
-                        lhs->velocity.y = 0;
+                        lhs->velocity.y = -500;
                         break;
                     case CollisionSideRight:
                     case CollisionSideLeft:
-                        rhs->velocity.x = 0;
+                        lhs->velocity.x = 0;
                         break;
                 }
             }

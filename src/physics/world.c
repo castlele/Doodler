@@ -1,5 +1,6 @@
 #include <stdbool.h>
 #include <raylib.h>
+#include <raymath.h>
 #include <assert.h>
 
 #include "world.h"
@@ -10,8 +11,7 @@ void BumpColliders(CollisionSide side, Collider *lhs, Collider *rhs);
 PhysicsWorld CreatePhysicsWorld(int gravityX, int gravityY)
 {
     return (PhysicsWorld) {
-        .gravityX = gravityX,
-        .gravityY = gravityY,
+        .gravity = (Vector2) { .x = gravityX, .y = gravityY, },
         .currentCollider = -1,
     };
 }
@@ -45,21 +45,24 @@ void UpdatePhysicsWorld(PhysicsWorld *w, float dt)
                 switch (side) {
                     case CollisionSideBottom:
                     case CollisionSideTop:
-                        lhs->speedY = 0;
+                        lhs->velocity.y = 0;
                         break;
                     case CollisionSideRight:
                     case CollisionSideLeft:
-                        rhs->speedX = 0;
+                        rhs->velocity.x = 0;
                         break;
                 }
             }
         }
 
-        lhs->speedX += dt * w->gravityX;
-        lhs->speedY += dt * w->gravityY;
+        lhs->force = Vector2Add(lhs->force, Vector2Scale(w->gravity, lhs->mass));
 
-        lhs->x += dt * lhs->speedX;
-        lhs->y += dt * lhs->speedY;
+        Vector2 a = (Vector2) { .x = lhs->force.x / lhs->mass, .y = lhs->force.y / lhs->mass, };
+        lhs->velocity = Vector2Add(lhs->velocity, Vector2Scale(a, dt));
+
+        lhs->position = Vector2Add(lhs->position, Vector2Scale(lhs->velocity, dt));
+
+        lhs->force = (Vector2) { .x = 0, .y = 0 };
     }
 }
 
@@ -68,7 +71,7 @@ void DrawPhysicsWorld(PhysicsWorld *w)
     for (int i = 0; i <= w->currentCollider; i++) {
         Collider *c = w->colliders[i];
 
-        DrawRectangleLines(c->x, c->y, c->width, c->height, RED);
+        DrawRectangleLines(c->position.x, c->position.y, c->width, c->height, RED);
     }
 }
 
@@ -78,16 +81,16 @@ void BumpColliders(CollisionSide side, Collider *lhs, Collider *rhs)
 {
     switch (side) {
         case CollisionSideRight:
-            lhs->x = rhs->x - lhs->width;
+            lhs->position.x = rhs->position.x - lhs->width;
             break;
         case CollisionSideLeft:
-            lhs->x = rhs->x + rhs->width;
+            lhs->position.x = rhs->position.x + rhs->width;
             break;
         case CollisionSideTop:
-            lhs->y = rhs->y + rhs->height;
+            lhs->position.y = rhs->position.y + rhs->height;
             break;
         case CollisionSideBottom:
-            lhs->y = rhs->y - lhs->height;
+            lhs->position.y = rhs->position.y - lhs->height;
             break;
     }
 }

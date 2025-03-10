@@ -7,10 +7,10 @@
 
 bool CheckCollision(Collider *lhs, Collider *rhs)
 {
-    float pmaxX = fmax(lhs->x, rhs->x);
-    float pmaxY = fmax(lhs->y, rhs->y);
-    float pminX = fmin(lhs->x + lhs->width, rhs->x + rhs->width);
-    float pminY = fmin(lhs->y + lhs->height, rhs->y + rhs->height);
+    float pmaxX = fmax(lhs->position.x, rhs->position.x);
+    float pmaxY = fmax(lhs->position.y, rhs->position.y);
+    float pminX = fmin(lhs->position.x + lhs->width, rhs->position.x + rhs->width);
+    float pminY = fmin(lhs->position.y + lhs->height, rhs->position.y + rhs->height);
 
     return pminX - pmaxX >= 0 && pminY - pmaxY >= 0;
 }
@@ -19,10 +19,10 @@ CollisionSide GetCollisionSide(bool isCollided, Collider *lhs, Collider *rhs)
 {
     assert(isCollided);
 
-    float right = (lhs->x + lhs->width) - rhs->x;
-    float left = (rhs->x + rhs->width) - lhs->x;
-    float top = (rhs->y + rhs->height) - lhs->y;
-    float bottom = (lhs->y + lhs->height) - rhs->y;
+    float right = (lhs->position.x + lhs->width) - rhs->position.x;
+    float left = (rhs->position.x + rhs->width) - lhs->position.x;
+    float top = (rhs->position.y + rhs->height) - lhs->position.y;
+    float bottom = (lhs->position.y + lhs->height) - rhs->position.y;
 
     if (right < left && right < top && right < bottom) {
         return CollisionSideRight;
@@ -35,15 +35,15 @@ CollisionSide GetCollisionSide(bool isCollided, Collider *lhs, Collider *rhs)
     }
 }
 
-Collider *CreateCollider(float x, float y, float width, float height, ColliderType type)
+Collider *CreateCollider(float x, float y, float width, float height, ColliderType type, float mass)
 {
     Collider *collider = malloc(sizeof(Collider));
-    collider->x = x;
-    collider->y = y;
+    collider->position = (Vector2) { .x = x, .y = y, };
     collider->width = width;
     collider->height = height;
-    collider->speedX = 0;
-    collider->speedY = 0;
+    collider->velocity = (Vector2) { .x = 0, .y = 0, };
+    collider->force = (Vector2) { .x = 0, .y = 0, };
+    collider->mass = mass;
     collider->type = type;
 
     return collider;

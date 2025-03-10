@@ -35,8 +35,8 @@ Platform CreatePlatform(int x, int y)
 
 void UpdatePlatform(Platform *p)
 {
-    p->x = p->collider->x;
-    p->y = p->collider->y;
+    p->x = p->collider->position.x;
+    p->y = p->collider->position.y;
 }
 
 void DrawPlatform(Platform *p)

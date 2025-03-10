@@ -1,6 +1,7 @@
 #ifndef COLLIDER_H_
 #define COLLIDER_H_
 
+#include <raylib.h>
 #include <stdbool.h>
 
 typedef enum ColliderType
@@ -11,12 +12,12 @@ typedef enum ColliderType
 
 typedef struct Collider
 {
-    float x;
-    float y;
+    Vector2 position;
     float width;
     float height;
-    float speedX;
-    float speedY;
+    Vector2 velocity;
+    Vector2 force;
+    float mass;
     ColliderType type;
     char mask[16];
 } Collider;
@@ -32,7 +33,7 @@ typedef enum CollisionSide
 bool CheckCollision(Collider *lhs, Collider *rhs);
 CollisionSide GetCollisionSide(bool isCollided, Collider *lhs, Collider *rhs);
 
-Collider *CreateCollider(float x, float y, float width, float height, ColliderType type);
+Collider *CreateCollider(float x, float y, float width, float height, ColliderType type, float mass);
 void SetColliderMask(Collider *c, char mask[]);
 void DestroyCollider(Collider *collider);
 

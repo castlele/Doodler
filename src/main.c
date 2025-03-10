@@ -15,7 +15,7 @@ int main()
     ApplyConfig();
 
     float dt;
-    PhysicsWorld world = CreatePhysicsWorld(0, 150);
+    PhysicsWorld world = CreatePhysicsWorld(0, 800);
 
     int platformW = GetPlatformWidth();
     int platformH = GetPlatformHeight();
@@ -33,7 +33,8 @@ int main()
         pr.y,
         pr.width,
         pr.height,
-        ColliderTypeDinamic
+        ColliderTypeDinamic,
+        50
     );
     SetColliderMask(player.collider, "player");
     platform.collider = CreateCollider(
@@ -41,7 +42,8 @@ int main()
         platr.y,
         platr.width,
         platr.height,
-        ColliderTypeStatic
+        ColliderTypeStatic,
+        0
     );
     SetColliderMask(platform.collider, "platform");
 

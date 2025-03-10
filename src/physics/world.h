@@ -1,14 +1,14 @@
 #ifndef WORLD_H_
 #define WORLD_H_
 
+#include <raylib.h>
 #include "collider.h"
 
 #define MAX_COLLIDERS 100
 
 typedef struct PhysicsWorld
 {
-    float gravityX;
-    float gravityY;
+    Vector2 gravity;
     // TODO: Make array mutable
     Collider *colliders[MAX_COLLIDERS];
     int currentCollider;

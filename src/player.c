@@ -26,8 +26,8 @@ Player CreatePlayer(int x, int y)
 
 void UpdatePlayer(Player *p)
 {
-    p->x = p->collider->x;
-    p->y = p->collider->y;
+    p->x = p->collider->position.x;
+    p->y = p->collider->position.y;
 }
 
 void DrawPlayer(Player *p)

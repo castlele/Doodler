@@ -17,6 +17,7 @@ int score;
 
 void ApplyConfig();
 void ListenEvents();
+void UpdateLevel();
 void UpdateScore();
 void DrawScore();
 
@@ -53,6 +54,7 @@ int main()
         UpdatePhysicsWorld(&world, dt);
         UpdatePlatforms(&platformsFactory);
         UpdatePlayer(&player, dt);
+        UpdateLevel();
         UpdateScore();
 
         ListenEvents();
@@ -86,6 +88,17 @@ void ListenEvents()
 {
     if (IsKeyPressed(KEY_R)) {
         ResetPlayerPos(&player);
+        ResetPlatforms(&platformsFactory);
+    }
+}
+
+void UpdateLevel()
+{
+    // TODO: Refactor?
+    if (player.y + 25 < 0) {
+        player.collider->position.y = GetScreenHeight() - 25;
+        player.collider->velocity.y -= 50;
+        level++;
         ResetPlatforms(&platformsFactory);
     }
 }

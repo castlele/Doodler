@@ -87,6 +87,8 @@ void ApplyConfig()
 void ListenEvents()
 {
     if (IsKeyPressed(KEY_R)) {
+        level = 1;
+        score = 0;
         ResetPlayerPos(&player);
         ResetPlatforms(&platformsFactory);
     }
@@ -99,6 +101,11 @@ void UpdateLevel()
         player.collider->position.y = GetScreenHeight() - 25;
         player.collider->velocity.y -= 50;
         level++;
+        ResetPlatforms(&platformsFactory);
+    } else if (player.y + 25 > GetScreenHeight()) {
+        level = 1;
+        score = 0;
+        ResetPlayerPos(&player);
         ResetPlatforms(&platformsFactory);
     }
 }

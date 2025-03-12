@@ -3,7 +3,6 @@
 
 #include <raylib.h>
 
-#include "platform.h"
 #include "physics/collider.h"
 
 typedef struct Player
@@ -20,6 +19,6 @@ Player CreatePlayer(int x, int y);
 void UpdatePlayer(Player *p, float dt);
 void DrawPlayer(Player *p);
 
-void CheckPlayerCollisionWithPlatform(Player *p, Platform *plat);
+void ResetPlayerPos(Player *p);
 
 #endif

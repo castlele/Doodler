@@ -1,4 +1,5 @@
 #include <raylib.h>
+#include <stdlib.h>
 
 #include "platform.h"
 
@@ -25,12 +26,14 @@ Rectangle GetPlatformRect(Platform *p)
     };
 }
 
-Platform CreatePlatform(int x, int y)
+Platform *CreatePlatform(int x, int y, bool hidden)
 {
-    return (Platform) {
-        .x = x,
-        .y = y,
-    };
+    Platform *p = malloc(sizeof(Platform));
+    p->x = x;
+    p->y = y;
+    p->hidden = hidden;
+
+    return p;
 }
 
 void UpdatePlatform(Platform *p)
@@ -41,6 +44,8 @@ void UpdatePlatform(Platform *p)
 
 void DrawPlatform(Platform *p)
 {
+    if (p->hidden) return;
+
     DrawRectangle(p->x, p->y, GetPlatformWidth(), GetPlatformHeight(), BROWN);
 }
 

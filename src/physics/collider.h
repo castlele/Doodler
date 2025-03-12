@@ -20,6 +20,8 @@ typedef struct Collider
     float mass;
     ColliderType type;
     char mask[16];
+
+    bool active;
 } Collider;
 
 typedef enum CollisionSide

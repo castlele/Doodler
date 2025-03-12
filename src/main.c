@@ -1,32 +1,39 @@
+#include <math.h>
 #include <raylib.h>
+#include <stdio.h>
 
 #include "physics/world.h"
 #include "physics/collider.h"
-#include "platform.h"
+#include "platforms.h"
 #include "player.h"
 
-#define SCREEN_W 800
+#define SCREEN_W 400
 #define SCREEN_H 600
 
+PlatformsFactory platformsFactory;
+Player player;
+int level = 1;
+int score;
+
 void ApplyConfig();
+void ListenEvents();
+void UpdateScore();
+void DrawScore();
 
 int main()
 {
     ApplyConfig();
 
+    // TODO: Make window resizable
+    //       https://www.reddit.com/r/raylib/comments/a19a67/resizable_window_questions/
+    InitWindow(SCREEN_W, SCREEN_H, "Doodler");
+
     float dt;
     PhysicsWorld world = CreatePhysicsWorld(0, 800);
+    player = CreatePlayer(SCREEN_W / 2, SCREEN_H / 2);
+    platformsFactory = CreatePlatformFactory();
 
-    int platformW = GetPlatformWidth();
-    int platformH = GetPlatformHeight();
-    Platform platform = CreatePlatform(
-        (SCREEN_W - platformW) / 2,
-        (SCREEN_H - platformH) / 2
-    );
-
-    Player player = CreatePlayer(platform.x, platform.y - 100);
     Rectangle pr = GetPlayerRect(&player);
-    Rectangle platr = GetPlatformRect(&platform);
 
     player.collider = CreateCollider(
         pr.x,
@@ -36,36 +43,26 @@ int main()
         ColliderTypeDinamic,
         50
     );
-    SetColliderMask(player.collider, "player");
-    platform.collider = CreateCollider(
-        platr.x,
-        platr.y,
-        platr.width,
-        platr.height,
-        ColliderTypeStatic,
-        0
-    );
-    SetColliderMask(platform.collider, "platform");
 
     AddColliderToWorld(&world, player.collider);
-    AddColliderToWorld(&world, platform.collider);
-
-    // TODO: Make window resizable
-    //       https://www.reddit.com/r/raylib/comments/a19a67/resizable_window_questions/
-    InitWindow(SCREEN_W, SCREEN_H, "Doodler");
+    SetPlatformColliders(&platformsFactory, &world);
 
     while (!WindowShouldClose()) {
         dt = GetFrameTime();
 
         UpdatePhysicsWorld(&world, dt);
-        UpdatePlatform(&platform);
+        UpdatePlatforms(&platformsFactory);
         UpdatePlayer(&player, dt);
+        UpdateScore();
+
+        ListenEvents();
 
         BeginDrawing();
             ClearBackground(WHITE);
 
-            DrawPlatform(&platform);
+            DrawPlatforms(&platformsFactory);
             DrawPlayer(&player);
+            DrawScore();
             DrawPhysicsWorld(&world);
         EndDrawing();
     }
@@ -83,4 +80,26 @@ void ApplyConfig()
     // FIX: Why setting fps shouldn't be used?
     // https://bedroomcoders.co.uk/posts/218
     SetTargetFPS(60);
+}
+
+void ListenEvents()
+{
+    if (IsKeyPressed(KEY_R)) {
+        ResetPlayerPos(&player);
+        ResetPlatforms(&platformsFactory);
+    }
+}
+
+void UpdateScore()
+{
+    int h = GetScreenHeight();
+    score = fmax((h - player.y) * level, score);
+}
+
+void DrawScore()
+{
+    char scoreMessage[64];
+    sprintf(scoreMessage, "SCORE: %d", score);
+
+    DrawText(scoreMessage, GetScreenWidth() / 2, 0, 32, BLACK);
 }

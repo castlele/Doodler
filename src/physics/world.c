@@ -40,12 +40,15 @@ void UpdatePhysicsWorld(PhysicsWorld *w, float dt)
 
             if (isCollided) {
                 CollisionSide side = GetCollisionSide(isCollided, lhs, rhs);
-                BumpColliders(side, lhs, rhs);
+                // TODO: This method is useless right now, because it's working incorrectly,
+                // Maybe this is caused by setting fps in `main.c`
+                // BumpColliders(side, lhs, rhs);
 
                 switch (side) {
+                    case CollisionSideTop: break;
                     case CollisionSideBottom:
-                    case CollisionSideTop:
-                        lhs->velocity.y = -500;
+                        // TODO: This should be set differently!
+                        lhs->velocity.y = -650;
                         break;
                     case CollisionSideRight:
                     case CollisionSideLeft:

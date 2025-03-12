@@ -36,9 +36,26 @@ void UpdatePlayer(Player *p, float dt)
     } else {
         p->collider->velocity.x = 0;
     }
+
+    int halfW = PLAYER_W / 2;
+
+    if (p->x + halfW < 0) {
+        p->collider->position.x = p->x + GetScreenWidth();
+    } else if (p->x + halfW > GetScreenWidth()) {
+        p->collider->position.x = p->x - GetScreenWidth();
+    }
 }
 
 void DrawPlayer(Player *p)
 {
     DrawRectangle(p->x, p->y, PLAYER_W, PLAYER_H, GREEN);
+}
+
+void ResetPlayerPos(Player *p)
+{
+    int x = GetScreenWidth() / 2;
+    int y = GetScreenHeight() / 2;
+
+    p->collider->position.x = x;
+    p->collider->position.y = y;
 }

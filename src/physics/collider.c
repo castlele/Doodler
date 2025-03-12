@@ -7,6 +7,10 @@
 
 bool CheckCollision(Collider *lhs, Collider *rhs)
 {
+    if (!lhs->active || !rhs->active) {
+        return false;
+    }
+
     float pmaxX = fmax(lhs->position.x, rhs->position.x);
     float pmaxY = fmax(lhs->position.y, rhs->position.y);
     float pminX = fmin(lhs->position.x + lhs->width, rhs->position.x + rhs->width);
@@ -45,6 +49,7 @@ Collider *CreateCollider(float x, float y, float width, float height, ColliderTy
     collider->force = (Vector2) { .x = 0, .y = 0, };
     collider->mass = mass;
     collider->type = type;
+    collider->active = true;
 
     return collider;
 }

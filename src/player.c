@@ -2,6 +2,7 @@
 #include <stdbool.h>
 
 #include "player.h"
+#include "physics/collider.h"
 
 #define PLAYER_W 50
 #define PLAYER_H 50
@@ -18,10 +19,21 @@ Rectangle GetPlayerRect(Player *p)
 
 Player CreatePlayer(int x, int y)
 {
-    return (Player) {
+    Player p = {
         .x = x,
         .y = y,
     };
+
+    p.collider = CreateCollider(
+        p.x,
+        p.y,
+        PLAYER_W,
+        PLAYER_H,
+        ColliderTypeDynamic,
+        50
+    );
+
+    return p;
 }
 
 void UpdatePlayer(Player *p, float dt)

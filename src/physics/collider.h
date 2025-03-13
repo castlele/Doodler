@@ -7,7 +7,7 @@
 typedef enum ColliderType
 {
     ColliderTypeStatic,
-    ColliderTypeDinamic,
+    ColliderTypeDynamic,
 } ColliderType;
 
 typedef struct Collider

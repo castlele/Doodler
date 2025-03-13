@@ -22,13 +22,15 @@ Player CreatePlayer(int x, int y)
     Player p = {
         .x = x,
         .y = y,
+        .width = PLAYER_W,
+        .height = PLAYER_H,
     };
 
     p.collider = CreateCollider(
         p.x,
         p.y,
-        PLAYER_W,
-        PLAYER_H,
+        p.width,
+        p.height,
         ColliderTypeDynamic,
         50
     );

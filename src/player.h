@@ -9,6 +9,8 @@ typedef struct Player
 {
     int x;
     int y;
+    int width;
+    int height;
     Collider *collider;
 } Player;
 

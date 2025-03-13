@@ -28,11 +28,11 @@ CollisionSide GetCollisionSide(bool isCollided, Collider *lhs, Collider *rhs)
     float top = (rhs->position.y + rhs->height) - lhs->position.y;
     float bottom = (lhs->position.y + lhs->height) - rhs->position.y;
 
-    if (right < left && right < top && right < bottom) {
+    if (right <= left && right <= top && right <= bottom) {
         return CollisionSideRight;
-    } else if (left < top && left < bottom) {
+    } else if (left <= top && left <= bottom) {
         return CollisionSideLeft;
-    } else if (top < bottom) {
+    } else if (top <= bottom) {
         return CollisionSideTop;
     } else {
         return CollisionSideBottom;

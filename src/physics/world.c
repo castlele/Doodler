@@ -45,14 +45,15 @@ void UpdatePhysicsWorld(PhysicsWorld *w, float dt)
                 // BumpColliders(side, lhs, rhs);
 
                 switch (side) {
-                    case CollisionSideTop: break;
                     case CollisionSideBottom:
                         // TODO: This should be set differently!
-                        lhs->velocity.y = -650;
+                        if (lhs->velocity.y > 0) {
+                            lhs->velocity.y = -650;
+                        }
                         break;
+                    case CollisionSideTop:
                     case CollisionSideRight:
                     case CollisionSideLeft:
-                        lhs->velocity.x = 0;
                         break;
                 }
             }

@@ -4,7 +4,7 @@
 #define GRAVITY_X 0
 #define GRAVITY_Y 800
 
-void InitGameScreen();
+void InitGameScreen(void (*backToMainScreen)(void));
 void DestroyGameScreen();
 
 void UpdateGameScreen(float dt);

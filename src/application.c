@@ -17,6 +17,8 @@ void InitScreen();
 void Update(float dt);
 void Draw();
 
+void StartGame();
+void BackToMainMenu();
 void ApplyConfig();
 
 void InitApplication()
@@ -28,11 +30,10 @@ void InitApplication()
 
 void RunApplication()
 {
-    ApplyConfig();
-
     // TODO: Make window resizable
     //       https://www.reddit.com/r/raylib/comments/a19a67/resizable_window_questions/
     InitWindow(DEFAULT_SCREEN_W, DEFAULT_SCREEN_H, APP_NAME);
+    ApplyConfig();
 
     InitScreen();
 
@@ -53,20 +54,16 @@ void RunApplication()
     CloseWindow();
 }
 
-void ChangeApplicationState(AppState newState)
-{
-}
-
 // Private methods declarations
 
 void InitScreen()
 {
     switch (_app.state) {
         case AppStateGame:
-            InitGameScreen();
+            InitGameScreen(&BackToMainMenu);
             break;
         case AppStateMain:
-            InitMainScreen();
+            InitMainScreen(&StartGame);
             break;
     }
 }
@@ -95,10 +92,39 @@ void Draw()
     }
 }
 
+void StartGame()
+{
+    switch (_app.state) {
+        case AppStateGame:
+            break;
+        case AppStateMain:
+            DestroyMainScreen();
+            break;
+    }
+
+    _app.state = AppStateGame;
+    InitScreen();
+}
+
+void BackToMainMenu()
+{
+    switch (_app.state) {
+        case AppStateGame:
+            DestroyGameScreen();
+            break;
+        case AppStateMain:
+            break;
+    }
+
+    _app.state = AppStateMain;
+    InitScreen();
+}
+
 void ApplyConfig()
 {
     // TODO: Make this value configurable
     // FIX: Why setting fps shouldn't be used?
     // https://bedroomcoders.co.uk/posts/218
     SetTargetFPS(60);
+    SetExitKey(-1);
 }

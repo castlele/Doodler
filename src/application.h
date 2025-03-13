@@ -10,6 +10,4 @@ typedef enum AppState
 void InitApplication();
 void RunApplication();
 
-void ChangeApplicationState(AppState newState);
-
 #endif

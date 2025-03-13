@@ -2,6 +2,7 @@
 #define WORLD_H_
 
 #include <raylib.h>
+
 #include "collider.h"
 
 #define MAX_COLLIDERS 100

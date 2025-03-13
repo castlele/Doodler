@@ -39,7 +39,8 @@ SRC=./src
 
 FILES= \
 	$(wildcard src/*.c) \
-	$(wildcard src/physics/*.c)
+	$(wildcard src/ui/*.c) \
+	$(wildcard src/ui/physics/*.c)
 
 OBJECTS=$(FILES:.c=.o)
 
@@ -60,4 +61,8 @@ $(SRC)/%.o: $(SRC)/%.c
 clean:
 	rm $(SRC)/*.o
 	rm $(SRC)/*.d
+	rm $(SRC)/ui/*.o
+	rm $(SRC)/ui/*.d
+	rm $(SRC)/ui/physics/*.o
+	rm $(SRC)/ui/physics/*.d
 	rm $(APP)

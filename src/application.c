@@ -2,37 +2,28 @@
 #include <stdio.h>
 
 #include "application.h"
+#include "ui/game.h"
+#include "ui/main.h"
 #include "config.h"
-#include "physics/world.h"
-#include "platforms.h"
-#include "player.h"
-#include "score.h"
 
 typedef struct App
 {
-    PhysicsWorld world;
-    PlatformsFactory platformsFactory;
-    Player player;
+    AppState state;
 } App;
 
 App _app;
 
+void InitScreen();
 void Update(float dt);
 void Draw();
 
 void ApplyConfig();
-void ListenEvents();
 
 void InitApplication()
 {
     _app = (App) {
-        .player = CreatePlayer(DEFAULT_SCREEN_W / 2, DEFAULT_SCREEN_H / 2),
-        .world = CreatePhysicsWorld(GRAVITY_X, GRAVITY_Y),
-        .platformsFactory = CreatePlatformFactory(),
+        .state = AppStateMain,
     };
-
-    SetPlatformColliders(&_app.platformsFactory, &_app.world);
-    AddColliderToWorld(&_app.world, _app.player.collider);
 }
 
 void RunApplication()
@@ -43,7 +34,7 @@ void RunApplication()
     //       https://www.reddit.com/r/raylib/comments/a19a67/resizable_window_questions/
     InitWindow(DEFAULT_SCREEN_W, DEFAULT_SCREEN_H, APP_NAME);
 
-    ResetPlatforms(&_app.platformsFactory);
+    InitScreen();
 
     float dt;
 
@@ -51,8 +42,6 @@ void RunApplication()
         dt = GetFrameTime();
 
         Update(dt);
-
-        ListenEvents();
 
         BeginDrawing();
             ClearBackground(WHITE);
@@ -64,30 +53,46 @@ void RunApplication()
     CloseWindow();
 }
 
+void ChangeApplicationState(AppState newState)
+{
+}
+
 // Private methods declarations
+
+void InitScreen()
+{
+    switch (_app.state) {
+        case AppStateGame:
+            InitGameScreen();
+            break;
+        case AppStateMain:
+            InitMainScreen();
+            break;
+    }
+}
 
 void Update(float dt)
 {
-    UpdatePhysicsWorld(&_app.world, dt);
-    UpdatePlatforms(&_app.platformsFactory);
-    UpdatePlayer(&_app.player, dt);
-    UpdateScore(_app.player.y, _app.player.width);
-}
-
-void ListenEvents()
-{
-    if (IsKeyPressed(KEY_R)) {
-        ResetPlayerPos(&_app.player);
-        ResetPlatforms(&_app.platformsFactory);
+    switch (_app.state) {
+        case AppStateGame:
+            UpdateGameScreen(dt);
+            break;
+        case AppStateMain:
+            UpdateMainScreen(dt);
+            break;
     }
 }
 
 void Draw()
 {
-    DrawPlatforms(&_app.platformsFactory);
-    DrawPlayer(&_app.player);
-    DrawScore();
-    DrawPhysicsWorld(&_app.world);
+    switch (_app.state) {
+        case AppStateGame:
+            DrawGameScreen();
+            break;
+        case AppStateMain:
+            DrawMainScreen();
+            break;
+    }
 }
 
 void ApplyConfig()

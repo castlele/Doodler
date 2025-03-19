@@ -1,5 +1,5 @@
 #include <raylib.h>
-#include <stdio.h>
+#include <stdbool.h>
 
 #include "application.h"
 #include "ui/game.h"
@@ -9,12 +9,14 @@
 typedef struct App
 {
     AppState state;
+    bool shouldClose;
 } App;
 
 App _app;
 
 void InitScreen();
 void Update(float dt);
+void ListenApplicationEvents();
 void Draw();
 
 void StartGame();
@@ -25,6 +27,7 @@ void InitApplication()
 {
     _app = (App) {
         .state = AppStateMain,
+        .shouldClose = false,
     };
 }
 
@@ -39,10 +42,11 @@ void RunApplication()
 
     float dt;
 
-    while (!WindowShouldClose()) {
+    while (!WindowShouldClose() && !_app.shouldClose) {
         dt = GetFrameTime();
 
         Update(dt);
+        ListenApplicationEvents();
 
         BeginDrawing();
             ClearBackground(WHITE);
@@ -77,6 +81,13 @@ void Update(float dt)
         case AppStateMain:
             UpdateMainScreen(dt);
             break;
+    }
+}
+
+void ListenApplicationEvents()
+{
+    if (IsKeyDown(KEY_Q) && IsKeyDown(KEY_LEFT_CONTROL)) {
+        _app.shouldClose = true;
     }
 }
 

@@ -3,33 +3,16 @@
 #include "platforms.h"
 #include "platform.h"
 
-#define MIN_PLATFORMS_AMOUNT 2
-#define MAX_PLATFORMS_AMOUNT (MAX_PLATFORMS / 2)
+#define STEPS 10
 
 void SetPlatfromPosition(Platform *p, int minY, int maxY);
 
 PlatformsFactory CreatePlatformFactory()
 {
-    PlatformsFactory f = {
-        .currentBottom = GetRandomValue(MIN_PLATFORMS_AMOUNT, MAX_PLATFORMS_AMOUNT),
-        .currentTop = GetRandomValue(MIN_PLATFORMS_AMOUNT, MAX_PLATFORMS_AMOUNT),
-    };
-
-    int platformsAmount = f.currentTop + f.currentBottom;
-    int h = GetScreenHeight();
+    PlatformsFactory f = {};
 
     for (int i = 0; i < MAX_PLATFORMS; i++) {
         Platform *p = CreatePlatform(0, 0, true);
-
-        if (i < platformsAmount) {
-            p->hidden = false;
-
-            if (i <= platformsAmount / 2) {
-                SetPlatfromPosition(p, h - GetPlatformHeight(), h / 2);
-            } else if (i > platformsAmount / 2) {
-                SetPlatfromPosition(p, h / 2, 0);
-            }
-        }
 
         f.platforms[i] = p;
     }
@@ -43,7 +26,7 @@ void SetPlatformColliders(PlatformsFactory *f, PhysicsWorld *w)
     for (int i = 0; i < MAX_PLATFORMS; i++) {
         Platform *p = f->platforms[i];
 
-        if (!p) break;
+        if (!p) continue;
 
         p->collider = CreateCollider(
             p->x,
@@ -79,25 +62,19 @@ void DrawPlatforms(PlatformsFactory *f)
 
 void ResetPlatforms(PlatformsFactory *f)
 {
-    f->currentBottom = GetRandomValue(MIN_PLATFORMS_AMOUNT, MAX_PLATFORMS_AMOUNT);
-    f->currentTop = GetRandomValue(MIN_PLATFORMS_AMOUNT, MAX_PLATFORMS_AMOUNT);
-
-    int platformsAmount = f->currentTop + f->currentBottom;
     int h = GetScreenHeight();
+    int stepH = h / STEPS;
+    int platformsPerStep = MAX_PLATFORMS / STEPS;
 
-    for (int i = 0; i < MAX_PLATFORMS; i++) {
-        Platform *p = f->platforms[i];
+    for (int step = 0; step < MAX_PLATFORMS; step += platformsPerStep) {
+        int minY = h - stepH * step;
+        int maxY = h - (stepH * step + stepH);
 
-        if (i < platformsAmount) {
+        for (int i = 0; i < platformsPerStep; i++) {
+            Platform *p = f->platforms[i + step];
             p->hidden = false;
 
-            if (i <= platformsAmount / 2) {
-                SetPlatfromPosition(p, h - GetPlatformHeight(), h / 2);
-            } else if (i > platformsAmount / 2) {
-                SetPlatfromPosition(p, h / 2, 0);
-            }
-        } else {
-            p->hidden = true;
+            SetPlatfromPosition(p, minY, maxY);
         }
     }
 }

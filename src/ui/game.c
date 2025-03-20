@@ -35,6 +35,7 @@ void InitGameScreen(void (*backToMainScreen)(void))
 
     SetPlatformColliders(&_game->platformsFactory, &_game->world);
     AddColliderToWorld(&_game->world, _game->player.collider);
+    ResetPlatforms(&_game->platformsFactory);
 }
 
 void DestroyGameScreen()
